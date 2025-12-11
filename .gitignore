@@ -1,0 +1,6 @@
+.DS_Store
+data/.DS_Store
+engine/.DS_Store
+engine/__pycache__/preprocess_pipeline.cpython-312.pyc
+engine/__pycache__/predict_engine.cpython-312.pyc
+engine/__pycache__/__init__.cpython-312.pyc

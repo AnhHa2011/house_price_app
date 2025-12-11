@@ -300,9 +300,9 @@ class AmesPreprocessor(BaseEstimator, TransformerMixin):
         df = self._remove_duplicates(df)
         df = self._handle_missing_values(df, is_train)
 
-        df = self._remove_low_variance(df, is_train)
 
         if is_train:
+            df = self._remove_low_variance(df, is_train)
             df = self._handle_outliers(df)
 
         df = self._fix_logic_errors(df)
