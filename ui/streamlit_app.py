@@ -379,6 +379,38 @@ def render_single_prediction_tab(predictor, input_data):
             st.error(f"Lỗi dự đoán: {e}")
 
 
+def draw_gauge_chart(current_value):
+    """Vẽ Gauge Chart so sánh với mức giá trung bình thị trường (Ames Avg ~ $180,921)"""
+    avg_market_price = 180921
+    max_market_price = 755000  # Giá cao nhất trong tập dữ liệu
+
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number+delta",
+        value=current_value,
+        domain={'x': [0, 1], 'y': [0, 1]},
+        title={'text': "Vị thế Giá (So với TB Thị trường)", 'font': {'size': 18}},
+        delta={'reference': avg_market_price, 'relative': False, 'valueformat': "$,.0f"},
+        gauge={
+            'axis': {'range': [None, 600000], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'bar': {'color': "#27AE60"},  # Màu thanh chỉ thị
+            'bgcolor': "white",
+            'borderwidth': 2,
+            'bordercolor': "gray",
+            'steps': [
+                {'range': [0, 150000], 'color': "#E8F8F5"},  # Vùng giá rẻ
+                {'range': [150000, 300000], 'color': "#FEF9E7"},  # Vùng phổ thông
+                {'range': [300000, 600000], 'color': "#FDEDEC"}  # Vùng cao cấp
+            ],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': current_value
+            }
+        }
+    ))
+    fig.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
+    return fig
+
 # ==============================================================================
 # FUNC 2: TAB DỰ ĐOÁN BATCH
 # ==============================================================================
@@ -423,8 +455,14 @@ def render_analytics_tab(predictor, current_input_data):
 
     # --- CỘT TRÁI: BIỂU ĐỒ RADAR (Hồ sơ Sức mạnh) ---
     with col_left:
-        st.subheader("1. Hồ sơ Sức mạnh Căn nhà")
-        st.caption("So sánh các chỉ số quan trọng (quy đổi thang 10) để thấy điểm mạnh/yếu.")
+        # 1. Gauge Chart
+        st.subheader("1. Vị thế Giá")
+        st.plotly_chart(draw_gauge_chart(base_price), use_container_width=True)
+
+        # 2. Radar Chart
+        st.markdown("---")
+        st.subheader("2. Hồ sơ Sức mạnh")
+        st.caption("So sánh các chỉ số quan trọng (quy đổi thang 10).")
 
         # Tạo dữ liệu radar từ hàm chuẩn hóa
         labels, values = get_radar_data(current_input_data)
@@ -449,7 +487,6 @@ def render_analytics_tab(predictor, current_input_data):
             margin=dict(l=40, r=40, t=20, b=20)
         )
         st.plotly_chart(fig_radar, use_container_width=True)
-
     # --- CỘT PHẢI: GIẢ LẬP TOP 20 ---
     with col_right:
         st.subheader("2. Giả lập Chiến lược (Top 20)")
