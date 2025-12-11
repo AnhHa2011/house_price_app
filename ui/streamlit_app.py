@@ -14,7 +14,7 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 # ------------------------------------------------------------------
 
-# 🚨 BẮT BUỘC: Import class AmesPreprocessor để giải mã file .pkl 🚨
+# BẮT BUỘC: Import class AmesPreprocessor để giải mã file .pkl
 from engine.preprocess_pipeline import AmesPreprocessor
 # Import Engine
 from engine.predict_engine import HousePricePredictor
@@ -473,7 +473,7 @@ def run_streamlit_app():
         # PHẦN DỰ ĐOÁN
         # ------------------------------------------------------------------
         st.markdown("---")
-        if st.button("🚀 DỰ BÁO GIÁ (79 FIELDS)", key='single_predict'):
+        if st.button(" DỰ ĐOÁN GIÁ NHÀ", key='single_predict'):
             try:
                 results = PREDICTOR.predict_single(input_data)
 
@@ -499,12 +499,12 @@ def run_streamlit_app():
             st.write("Dữ liệu đầu vào:")
             st.dataframe(df_input.head())
 
-            if st.button("Bắt đầu Dự đoán Batch"):
+            if st.button("Bắt đầu Dự đoán"):
                 try:
                     with st.spinner("Đang xử lý và dự đoán..."):
                         df_output = process_batch_prediction(df_input)
 
-                    st.success("✅ Dự đoán Batch hoàn tất!")
+                    st.success(" Dự đoán hoàn tất!")
                     st.dataframe(df_output)
 
                     csv = df_output.to_csv(index=False).encode('utf-8')
