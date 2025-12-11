@@ -146,7 +146,7 @@ def get_complete_input_skeleton(predictor) -> Dict[str, Any]:
 # FUNC 1: TAB DỰ ĐOÁN ĐƠN LẺ
 # ==============================================================================
 def render_single_prediction_tab(predictor, input_data):
-    st.markdown("### Nhập thông tin chi tiết (79 Trường)")
+    st.markdown("### Nhập thông tin chi tiết")
     st.info(" **Gợi ý:** Các trường diện tích không giới hạn giá trị tối đa. Hãy nhập con số thực tế.")
 
     with st.expander("📍 1. Vị trí & Lô đất (Location & Lot)", expanded=True):
